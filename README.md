@@ -1,7 +1,6 @@
 # NanoPC-T4 Arch Linux Install Guide
 
-### 半中文化版本
-https://github.com/dhsjqgjxgjdshwh/arch-nanopct4/blob/main/README_zh.md
+### [半中文化版本] (https://github.com/dhsjqgjxgjdshwh/arch-nanopct4/blob/main/README_zh.md)
 ### Introduction
 
 This guide provides a relatively easy method for bootstrapping Arch Linux
