@@ -1,4 +1,4 @@
-# NanoPC-T4 Arch Linux 安装指南 （SOM-RK3399V2同样有效）
+# NanoPC-T4 Arch Linux 安装指南翻译版（SOM-RK3399V2同样有效）
 
 ### 指南
   本方案提供了一种十分方便的方法安装Arch Linux
