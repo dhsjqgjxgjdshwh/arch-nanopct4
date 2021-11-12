@@ -24,7 +24,7 @@ https://docs.armbian.com/User-Guide_Getting-Started/
     清理在 eMMC 的系统
     # dd if=/dev/zero of=/dev/sdX bs=1M count=32
 
-### Partition the eMMC device.
+### emmc重新分区
 
 ```
 # fdisk /dev/mmcblk2
@@ -38,25 +38,25 @@ Created a new partition 1 of type 'Linux filesystem' and of size 14.6 GiB.
 Command (m for help): w
 ```
 
-### Make the filesystem.
+### 格式化分区为ext4类型
 
     # mkfs.ext4 /dev/mmcblk2p1
 
-### Mount the filesystem.
+### 挂载分区
 
 ```
-# mkdir root
+# mkdir root 
 # mount /dev/mmcblk2p1 root
 ```
 
-### Download Arch and extract the root filesystem (as root).
+### 安装系统到emmc上 
 
 ```
 # wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
 # bsdtar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C root
 ```
 
-### Create the following boot.txt file.
+### 编辑引导参数
 
 ```
 # After modifying, run ./mkscr
@@ -78,7 +78,7 @@ if load ${devtype} ${devnum}:${bootpart} ${kernel_addr_r} /boot/Image; then
 fi
 ```
 
-Note: boot.txt is available [boot/boot.txt](here) for your convenience.
+## 注意：把boot.txt放在/Arch root filesystem/boot/boot.txt可以让你在接下来的操作更加便利OvO
 
 ### Optional: host root filesystem on NVMe storage.
 
