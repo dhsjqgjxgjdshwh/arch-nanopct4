@@ -142,7 +142,7 @@ archlinux上需安装uboot-tools
 ...
 ```
 
-Note: images are available [images](here) for your convenience.
+提示：uboot镜像可以到[这里](https://github.com/dhsjqgjxgjdshwh/arch-nanopct4/tree/main/images)获取
 
 ### 刷写uboot到emmc
 ```
