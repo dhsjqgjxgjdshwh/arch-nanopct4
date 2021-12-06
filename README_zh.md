@@ -56,7 +56,7 @@ Command (m for help): w
 # bsdtar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C root
 ```
 
-### 编辑引导参数
+### 编辑boot.txt
 
 ```
 # After modifying, run ./mkscr
@@ -78,35 +78,36 @@ if load ${devtype} ${devnum}:${bootpart} ${kernel_addr_r} /boot/Image; then
 fi
 ```
 
-## 注意：把boot.txt放在/Arch root filesystem/boot/boot.txt可以让你在接下来的操作更加便利OvO
+# 注意：把boot.txt放在Arch root filesystem/boot/boot.txt可以让你在接下来的操作更加便利OvO
 
 ### Optional: host root filesystem on NVMe storage.
 
-If you want to move the root filesystem to NVMe storage at a later time, you can modify `boot.txt`
-and add the appropriate UUID for your root partition. The full process for migrating to NVMe is
-beyond the scope of this guide.
+如果以后要将根文件系统移动到NVMe存储，可以修改'boot.txt'`
 
-Get the UUID for the NVMe partition.
+并为根分区添加适当的UUID。迁移到NVMe的完整过程如下
+
+超出本指南的范围。
+
+获取NVMe的UUID
 
 ```
 # blkid | grep nvme
 /dev/nvme0n1p1: UUID="a56421bd-4e0d-48cc-b7a9-ee4fbc48aef8" TYPE="ext4" PARTUUID="8a5c1dfe-01"
 ```
 
-Add the NVMe partition UUID to `boot.txt`.
+把NVMe的UUI写入 `boot.txt`.
 
     rootdev=UUID=a56421bd-4e0d-48cc-b7a9-ee4fbc48aef8
 
-### Convert the boot.txt into a boot.scr.
+### 把boot.txt转换成boot.scr 
 
-    # mkimage -A arm -O linux -T script -C none -n "U-Boot boot script" -d boot.txt boot.scr
+```
+archlinux上需安装uboot-tools
 
-### Copy the boot.scr and boot.txt to /boot in the Arch root filesystem.
+# mkimage -A arm -O linux -T script -C none -n "U-Boot boot script" -d boot.txt boot.scr
+```
 
-    # cp boot.scr root/boot
-    # cp boot.txt root/boot
-
-### Mount host devices into root filesystem for chroot.
+### 挂载本机设备到arch根目录系统，在archlinuxarm上安装可以使用arch-chroot可以跳过本步。
 
 ```
 # mount --bind /proc root/proc
@@ -115,10 +116,9 @@ Add the NVMe partition UUID to `boot.txt`.
 # mount --bind /dev/pts root/dev/pts
 ```
 
-### Chroot into the Arch filesystem to install packages required for wifi setup.
-
+### chroot到安装好的系统中
 ```
-# chroot root
+# chroot root 或 arch-chroot root
 # echo "nameserver 1.1.1.1" > /etc/resolv.conf
 # pacman-key --init
 # pacman-key --populate archlinuxarm
@@ -127,11 +127,11 @@ Add the NVMe partition UUID to `boot.txt`.
 # exit
 ```
 
-### Unmount the root Arch root filesystem.
+### 取消挂载文件系统
 
     # umount root
 
-### The u-boot files for the NanoPC-T4 are included with the official u-boot.
+### 安装nanopc-t4的uboot
 
 ```
 # dpkg -L linux-u-boot-nanopct4-current
@@ -144,7 +144,7 @@ Add the NVMe partition UUID to `boot.txt`.
 
 Note: images are available [images](here) for your convenience.
 
-### Flash the boot loader to the eMMC.
+### 刷写uboot到emmc
 ```
 # cd /usr/lib/linux-u-boot-current-nanopct4_20.11.6_arm64
 # dd if=idbloader.bin of=/dev/mmcblk2 seek=64 conv=notrunc
@@ -152,4 +152,4 @@ Note: images are available [images](here) for your convenience.
 # dd if=trust.bin of=/dev/mmcblk2 seek=24576 conv=notrunc
 ```
 
-Power off, remove the SD card, and power up the machine.
+关闭电源，拔下sd卡，重新启动即可
